@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Viewer</title>
+</head>
+<body>
+  <h1>Email Viewer</h1>
+
+  <label for="Email">Email:</label>
+  <input type="text" id="email" name="email">
+
+  <label for="password">Password:</label>
+  <input type="text" id="password" name="password">
+
+  <!-- Add textboxes for age and occupation -->
+  <label for="age">Age:</label>
+  <input type="text" id="age" name="age">
+  
+  <label for="occupation">Occupation:</label>
+  <input type="text" id="occupation" name="occupation">
+
+  <div id="email_list"></div>
+  <div id="returned_string"></div>
+
+  <button id="authorize_button">Fetch Emails</button>
+  <form action="/" method="GET">
+    <button type="submit">Go Back</button>
+  </form>
+  <script>
+    document.getElementById('authorize_button').addEventListener('click', function() {
+      // Get values from textboxes
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const age = document.getElementById('age').value;
+      const occupation = document.getElementById('occupation').value;
+      // Fetch email data from Flask backend with additional parameters
+      fetch(`/get_emails?age=${age}&occupation=${occupation}&email=${email}&password=${password}`)  // Assumes the Flask app is running on the same host and port
+        .then(response => response.json())
+        .then(data => {
+          
+          const emailList = document.getElementById('email_list');
+          console.log('Email Data:', data);
+          // Display email data on the webpage
+          emailList.innerHTML = '<h2>Emails:</h2>';
+
+          const returnedStringContainer = document.getElementById('returned_string');
+          returnedStringContainer.innerHTML = `<p>${data.my_string}</p>`;
+        })
+        .catch(error => console.error('Error fetching email data:', error));
+    });
+  </script>
+</body>
+</html>
