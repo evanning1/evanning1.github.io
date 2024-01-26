@@ -4,9 +4,11 @@ import imaplib
 import email
 from email.header import decode_header
 from email.utils import parseaddr
-
+import os
 from openai import OpenAI
-client = OpenAI(api_key = "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")
+key = os.environ.get('openai_key')
+
+client = OpenAI(api_key = key)
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
